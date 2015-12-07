@@ -8,6 +8,8 @@ using Accord.DirectSound;
 using Accord.Audio.Filters;
 using Recorder.Recorder;
 using Recorder.MFCC;
+using Recorder.MainFuctions;
+using Recorder.GUI;
 
 namespace Recorder
 {
@@ -298,7 +300,14 @@ namespace Recorder
             if (this.decoder != null) { this.decoder.Stop(); }
         }
 
+        
         private void btnAdd_Click(object sender, EventArgs e)
+        {
+            AddUser s = new AddUser();
+            s.Show();
+        }
+
+        private void btnIdentify_Click(object sender, EventArgs e)
         {
 
         }

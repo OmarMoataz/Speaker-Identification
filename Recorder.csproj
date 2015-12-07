@@ -98,6 +98,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\AddUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\AddUser.Designer.cs">
+      <DependentUpon>AddUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainFuctions\AudioOperations.cs" />
     <Compile Include="GUI\MainForm.cs">
       <SubType>Form</SubType>
@@ -113,6 +119,9 @@
     <Compile Include="Recorder\BaseRecorder.cs" />
     <Compile Include="Recorder\Decoder.cs" />
     <Compile Include="Recorder\Encoder.cs" />
+    <EmbeddedResource Include="GUI\AddUser.resx">
+      <DependentUpon>AddUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
