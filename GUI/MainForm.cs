@@ -10,6 +10,7 @@ using Recorder.Recorder;
 using Recorder.MFCC;
 using Recorder.MainFuctions;
 using Recorder.GUI;
+using Recorder.MainFuctions;
 
 namespace Recorder
 {
@@ -240,7 +241,7 @@ namespace Recorder
             else
             {
                 btnAdd.Enabled = this.path != null || this.encoder != null;
-                btnIdentify.Enabled = false;
+                btnIdentify.Enabled = true;
                 btnPlay.Enabled = this.path != null || this.encoder != null;//stream != null;
                 btnStop.Enabled = false;
                 btnRecord.Enabled = true;
@@ -308,6 +309,13 @@ namespace Recorder
         }
 
         private void btnIdentify_Click(object sender, EventArgs e)
+        {
+            AudioSignal a = AudioOperations.OpenAudioFile("file1.wav");
+            Sequence s = AudioOperations.ExtractFeatures(a);
+            MessageBox.Show(FileOperations.GetUserName(s));
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
         {
 
         }
