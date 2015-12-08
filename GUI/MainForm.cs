@@ -32,7 +32,7 @@ namespace Recorder
 
         private Encoder encoder;
         private Decoder decoder;
-
+        private Sequence sequence;
         private bool isRecorded;
 
         public MainForm()
@@ -211,7 +211,7 @@ namespace Recorder
             }
         }
 
-        private void updateButtons()
+        public void updateButtons()
         {
             if (InvokeRequired)
             {
@@ -240,7 +240,7 @@ namespace Recorder
             else
             {
                 btnAdd.Enabled = this.path != null || this.encoder != null;
-                btnIdentify.Enabled = false;
+                btnIdentify.Enabled = true;
                 btnPlay.Enabled = this.path != null || this.encoder != null;//stream != null;
                 btnStop.Enabled = false;
                 btnRecord.Enabled = true;
@@ -260,6 +260,11 @@ namespace Recorder
             {
                 Stream fileStream = saveFileDialog1.OpenFile();
                 this.encoder.Save(fileStream);
+
+                path = saveFileDialog1.FileName;
+                signal = AudioOperations.OpenAudioFile(path);
+                sequence = AudioOperations.ExtractFeatures(signal);
+
             }
         }
 
@@ -277,7 +282,7 @@ namespace Recorder
         {
             Close();
         }
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        public void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog open = new OpenFileDialog();
             if (open.ShowDialog() == DialogResult.OK)
@@ -286,11 +291,9 @@ namespace Recorder
                 path = open.FileName;
                 //Open the selected audio file
                 signal = AudioOperations.OpenAudioFile(path);
+                sequence = AudioOperations.ExtractFeatures(signal);
 
-                Sequence seq = AudioOperations.ExtractFeatures(signal);
-                DynamicTimeWarping.DynamicTimeWarpingOperations.DTW(seq);
                 updateButtons();
-
             }
         }
 
@@ -300,16 +303,31 @@ namespace Recorder
             if (this.decoder != null) { this.decoder.Stop(); }
         }
 
-        
+        //Add button opens file explorer to save the audio file as well as adding its sequence to the database
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddUser s = new AddUser();
+            saveToolStripMenuItem_Click(sender, e);
+            AddUser s = new AddUser(sequence);
             s.Show();
         }
 
+        //Identify button opens the file explorer to choose a pre existing audio file to be identified
         private void btnIdentify_Click(object sender, EventArgs e)
         {
+            OpenFileDialog open = new OpenFileDialog();
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                isRecorded = false;
+                path = open.FileName;
+                //Open the selected audio file
+                signal = AudioOperations.OpenAudioFile(path);
+                sequence = AudioOperations.ExtractFeatures(signal);
 
+                string UserName = FileOperations.GetUserName(sequence);
+
+                MessageBox.Show(UserName);
+                updateButtons();
+            }
         }
 
     }

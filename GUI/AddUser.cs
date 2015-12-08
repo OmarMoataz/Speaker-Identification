@@ -13,9 +13,11 @@ using Recorder.MainFuctions;
 namespace Recorder.GUI
 {
     public partial class AddUser : Form
-    { 
-        public AddUser()
+    {
+        Sequence sequence = new Sequence();
+        public AddUser(Sequence seq)
         {
+            sequence = seq;
             InitializeComponent();
         }
 
@@ -30,9 +32,7 @@ namespace Recorder.GUI
 
             else
             {
-                AudioSignal n = AudioOperations.OpenAudioFile("file.wav");
-                Sequence s = AudioOperations.ExtractFeatures(n);
-                FileOperations.SaveSequenceInDatabase(s, textBox1.Text);
+                FileOperations.SaveSequenceInDatabase(sequence, textBox1.Text);
                 this.Hide();
             }
         }
