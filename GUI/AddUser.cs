@@ -20,11 +20,21 @@ namespace Recorder.GUI
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {   
-            AudioSignal n = AudioOperations.OpenAudioFile("file.wav");
-            Sequence s = AudioOperations.ExtractFeatures(n);
-            FileOperations.SaveSequenceInDatabase(s,textBox1.Text);
-            this.Hide();
+        {
+
+            if (FileOperations.CheckIfUserExist(textBox1.Text))
+            {
+                MessageBox.Show("User Exists!");
+                this.Hide();
+            }
+
+            else
+            {
+                AudioSignal n = AudioOperations.OpenAudioFile("file.wav");
+                Sequence s = AudioOperations.ExtractFeatures(n);
+                FileOperations.SaveSequenceInDatabase(s, textBox1.Text);
+                this.Hide();
+            }
         }
 
         private void AddUser_Load(object sender, EventArgs e)

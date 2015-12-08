@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Recorder.MainFuctions
 {
-    class FileOperations
+    static class FileOperations
     {
         public static void SaveSequenceInDatabase(Sequence ToBeSavedSequence, string UserName)
         {
@@ -28,14 +28,34 @@ namespace Recorder.MainFuctions
                 FramesRow.Clear(); //clear it to start a new row (VIP)
             }
 
-            Saving.WriteLine("UserName: " + UserName);
-            Saving.WriteLine("@"); // Sequence Ends with this
-            
+            Saving.WriteLine("UserName:" + UserName);
+            Saving.WriteLine("@"); // Sequence Ends with this   
             Saving.Close();
         }
 
         public static bool CheckIfUserExist(string name)
         {
+            if (File.Exists("savedSeqs.txt"))
+            {
+                FileStream ReadingStream = new FileStream("savedSeqs.txt", FileMode.Open);
+                StreamReader Reading = new StreamReader(ReadingStream);
+                string line;
+                while (Reading.Peek() != -1)
+                {
+                    line = Reading.ReadLine();
+                    if (line.StartsWith("UserName"))
+                    {
+                        if (line.Contains(name))
+                        {
+                            Reading.Close();
+                            return true;
+                        }
+                    }
+                }
+
+                Reading.Close();
+                return false;
+            }
             return false;
         }
 
