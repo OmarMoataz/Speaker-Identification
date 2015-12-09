@@ -187,3 +187,20 @@ C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.csproj.Gene
 C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.exe
 C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.pdb
 C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.GUI.AddUser.resources
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\Recorder.exe
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\Recorder.pdb
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\AForge.dll
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\AForge.Math.dll
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\SharpDX.DirectSound.dll
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\SharpDX.dll
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\AForge.xml
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\AForge.Math.xml
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\SharpDX.xml
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\bin\Debug\SharpDX.DirectSound.xml
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.csprojResolveAssemblyReference.cache
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.GUI.AddUser.resources
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.MainForm.resources
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.Properties.Resources.resources
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.csproj.GenerateResource.Cache
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.exe
+E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.pdb
