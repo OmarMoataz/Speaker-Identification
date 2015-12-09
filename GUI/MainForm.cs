@@ -10,6 +10,7 @@ using Recorder.Recorder;
 using Recorder.MFCC;
 using Recorder.MainFuctions;
 using Recorder.GUI;
+using Recorder.MainFuctions;
 
 namespace Recorder
 {
@@ -314,6 +315,7 @@ namespace Recorder
         //Identify button opens the file explorer to choose a pre existing audio file to be identified
         private void btnIdentify_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             OpenFileDialog open = new OpenFileDialog();
             if (open.ShowDialog() == DialogResult.OK)
             {
@@ -324,6 +326,15 @@ namespace Recorder
                 sequence = AudioOperations.ExtractFeatures(signal);
 
                 string UserName = FileOperations.GetUserName(sequence);
+=======
+            AudioSignal a = AudioOperations.OpenAudioFile("file1.wav");
+            Sequence s = AudioOperations.ExtractFeatures(a);
+            MessageBox.Show(FileOperations.GetUserName(s));
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+>>>>>>> 45a01955c9381c92586b0b7bbfb8fa10f0f4f993
 
                 MessageBox.Show(UserName);
                 updateButtons();
