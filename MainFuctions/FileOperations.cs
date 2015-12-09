@@ -80,12 +80,13 @@ namespace Recorder.MainFuctions
             using (StreamReader Reader = new StreamReader("savedSequences.txt"))
             {
                 //Opening the file.
-                Sequence ToBeCompared = sequence;
+                Sequence ToBeCompared = new Sequence();
                 //Initializing a new sequence.
                 string Line;
                 //This line string contatins every line I go through in the file
                 int Index = 0;
                 //Holds the value of the current frame
+                bool flag = true;
                 while ((Line = Reader.ReadLine()) != null)
                 {
                     if (Index == 13)
@@ -100,7 +101,8 @@ namespace Recorder.MainFuctions
                             NameOfMinimumDistance = Line;
                             //I update the name of the person to line because on the 13th index line, it'll have the name of the person.
                         }
-                        ToBeCompared = sequence;
+                        flag = true;
+                        ToBeCompared = new Sequence();
                         //This is a reinitialization just to clear out old values from the previous iteration
                         Index = -1;
                         //Initialize the index to -1 because it will be incremented at the end of this loop so, I want the value to be 0
@@ -108,12 +110,22 @@ namespace Recorder.MainFuctions
                     else
                     {
                         string[] ExtractedStringsFromLine = Line.Split('|');
-                        int maxNumberOfFramesToBeCompared = Math.Min(ExtractedStringsFromLine.Length - 1, sequence.Frames.Count());
-                        //Here I split all the values from every line to an array of Strings.
-                        for (int i = 0; i < maxNumberOfFramesToBeCompared; i++)
+
+                        if (flag == true)
                         {
+                            ToBeCompared.Frames = new MFCCFrame[ExtractedStringsFromLine.Length - 1];
+                        }
+                        //Here I split all the values from every line to an array of Strings.
+                        for (int i = 0; i < ExtractedStringsFromLine.Length - 1; i++)
+                        {
+                            if (flag == true)
+                            {
+                                ToBeCompared.Frames[i] = new MFCCFrame();
+                            }
+
                             ToBeCompared.Frames[i].Features[Index] = double.Parse(ExtractedStringsFromLine[i]);
                         }
+                        flag = false;
 
                     }
                     ++Index;
