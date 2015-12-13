@@ -112,10 +112,11 @@ namespace Recorder.MainFuctions
                     {
                         string[] ExtractedStringsFromLine = Line.Split('|');
                         //Here I split all the values from every line to an array of Strings.
-                        ToBeCompared.Frames = new MFCCFrame[ExtractedStringsFromLine.Length];
+                        ToBeCompared.Frames = new MFCCFrame[ExtractedStringsFromLine.Length-1];
                         for (int i = 0; i < ExtractedStringsFromLine.Length-1; i++)
                         {
                             double Temp = double.Parse(ExtractedStringsFromLine[i]);
+                            ToBeCompared.Frames[i] = new MFCCFrame();
                             ToBeCompared.Frames[i].Features[Index] = Temp;
                         }
                         //This loop iterates through every string value I read from the line and converts it to a double.
