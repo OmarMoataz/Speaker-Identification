@@ -291,7 +291,6 @@ namespace Recorder
                 Sequence seq = AudioOperations.ExtractFeatures(signal);
                 DynamicTimeWarping.DynamicTimeWarpingOperations.DTW(seq);
                 updateButtons();
-
             }
         }
 
