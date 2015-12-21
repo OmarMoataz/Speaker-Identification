@@ -75,7 +75,7 @@ namespace Recorder.MainFuctions
         {
             String NameOfMinimumDistance = "";
             //The Value returned from this function, contains the name of the person that's the closest match.
-            double MinimumDistanceBetweenTwoSequences = 1e9;
+            double MinimumDistanceBetweenTwoSequences = double.MaxValue;
             //Holds the value of the closest after comparing all the sequences to the sequence required.
             using (StreamReader Reader = new StreamReader("savedSequences.txt"))
             {
@@ -91,16 +91,19 @@ namespace Recorder.MainFuctions
                 {
                     if (Index == 13)
                     {
-                        double Current = DynamicTimeWarpingOperations.DTW_Distance(sequence, ToBeCompared);
+                        double LowerBoundDistance = DynamicTimeWarpingOperations.LowerBound_Kim(sequence, ToBeCompared);
+                        if (LowerBoundDistance > MinimumDistanceBetweenTwoSequences) goto skip;
+                        double TrueDistance = DynamicTimeWarpingOperations.DTW_Distance(sequence, ToBeCompared);
                         //Consider Current a temp variable that holds the minimum distance returned from comparing the two sequences.
-                        if (Current < MinimumDistanceBetweenTwoSequences)
+                        if (TrueDistance < MinimumDistanceBetweenTwoSequences)
                         //Here I compare the two Distances together to see if I need to update the minimum or not.
                         {
-                            MinimumDistanceBetweenTwoSequences = Current;
+                            MinimumDistanceBetweenTwoSequences = TrueDistance;
                             //Here I update the minimum distance between two values.
                             NameOfMinimumDistance = Line;
                             //I update the name of the person to line because on the 13th index line, it'll have the name of the person.
                         }
+                    skip:
                         flag = true;
                         ToBeCompared = new Sequence();
                         //This is a reinitialization just to clear out old values from the previous iteration

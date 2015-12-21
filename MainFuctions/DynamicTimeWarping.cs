@@ -52,6 +52,7 @@ namespace Recorder.DynamicTimeWarping
             }
             return DTW[numberOfFrames_Sequence1, numberOfFrames_Sequence2];
         }
+
         private static double distance(MFCCFrame frame1, MFCCFrame frame2)
         {
             double difference_distance = 0;
@@ -63,6 +64,34 @@ namespace Recorder.DynamicTimeWarping
             }
 
             return Math.Sqrt(difference_distance);
+        }
+
+        public static double LowerBound_Kim(Sequence sequence1, Sequence sequence2)
+        {
+            int sizeOfSequence1= sequence1.Frames.Count();
+            int sizeOfSequence2= sequence2.Frames.Count();
+
+            MFCCFrame firstElementInFirstSequence = sequence1.Frames[0];
+            MFCCFrame firstElementInSecondSequence = sequence2.Frames[0];
+            MFCCFrame lastElementInFirstSequence = sequence1.Frames[sizeOfSequence1 - 1];
+            MFCCFrame lastElementInSecondSequence = sequence2.Frames[sizeOfSequence2 - 1];
+
+            sequence1.Frames.OrderBy(f => f.Features);
+            sequence2.Frames.OrderBy(f => f.Features);
+
+            MFCCFrame minimumElementInFirstSequence = sequence1.Frames[0];
+            MFCCFrame minimumElementInSecondSequence = sequence2.Frames[0];
+            MFCCFrame maximumElementInFirstSequence = sequence1.Frames[sizeOfSequence1 - 1];
+            MFCCFrame maximumElementInSecondSequence = sequence2.Frames[sizeOfSequence2 - 1];
+            
+            double distanceBetweenFirsts = distance(firstElementInFirstSequence, firstElementInSecondSequence);
+            double distanceBetweenLasts = distance(lastElementInFirstSequence, lastElementInSecondSequence);
+            double distanceBetweenMinimums = distance(minimumElementInFirstSequence, minimumElementInSecondSequence);
+            double distanceBetweenMaximums = distance(maximumElementInFirstSequence, maximumElementInSecondSequence);
+            double lowerBoundValue = Math.Min(
+                                    Math.Min(distanceBetweenFirsts, distanceBetweenLasts),
+                                    Math.Min(distanceBetweenMinimums, distanceBetweenMaximums));
+            return lowerBoundValue;
         }
     }
 }
