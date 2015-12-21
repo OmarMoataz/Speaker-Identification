@@ -52,8 +52,8 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.SavedRadio = new System.Windows.Forms.RadioButton();
             this.RecordRadio = new System.Windows.Forms.RadioButton();
+            this.SavedRadio = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -244,18 +244,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Identify";
             // 
-            // SavedRadio
-            // 
-            this.SavedRadio.AutoSize = true;
-            this.SavedRadio.Location = new System.Drawing.Point(7, 20);
-            this.SavedRadio.Name = "SavedRadio";
-            this.SavedRadio.Size = new System.Drawing.Size(56, 17);
-            this.SavedRadio.TabIndex = 0;
-            this.SavedRadio.TabStop = true;
-            this.SavedRadio.Text = "Saved";
-            this.SavedRadio.UseVisualStyleBackColor = true;
-            this.SavedRadio.CheckedChanged += new System.EventHandler(this.SavedRadio_CheckedChanged);
-            // 
             // RecordRadio
             // 
             this.RecordRadio.AutoSize = true;
@@ -267,6 +255,18 @@
             this.RecordRadio.Text = "Record";
             this.RecordRadio.UseVisualStyleBackColor = true;
             this.RecordRadio.CheckedChanged += new System.EventHandler(this.RecordRadio_CheckedChanged);
+            // 
+            // SavedRadio
+            // 
+            this.SavedRadio.AutoSize = true;
+            this.SavedRadio.Location = new System.Drawing.Point(7, 20);
+            this.SavedRadio.Name = "SavedRadio";
+            this.SavedRadio.Size = new System.Drawing.Size(56, 17);
+            this.SavedRadio.TabIndex = 0;
+            this.SavedRadio.TabStop = true;
+            this.SavedRadio.Text = "Saved";
+            this.SavedRadio.UseVisualStyleBackColor = true;
+            this.SavedRadio.CheckedChanged += new System.EventHandler(this.SavedRadio_CheckedChanged);
             // 
             // MainForm
             // 
@@ -290,6 +290,7 @@
             this.Name = "MainForm";
             this.Text = "Speaker Identification";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFormFormClosed);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();

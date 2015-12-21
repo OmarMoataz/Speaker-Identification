@@ -307,6 +307,9 @@ namespace Recorder
         private void btnAdd_Click(object sender, EventArgs e)
         {
             saveToolStripMenuItem_Click(sender, e);
+            
+            if (sequence == null) return;
+
             AddUser s = new AddUser(sequence);
             s.Show();
         }
@@ -373,7 +376,9 @@ namespace Recorder
             updateButtons();
         }
 
-        
+        private void MainForm_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }

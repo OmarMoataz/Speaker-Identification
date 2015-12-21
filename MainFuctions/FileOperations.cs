@@ -73,7 +73,7 @@ namespace Recorder.MainFuctions
         //======================================================
         public static string GetUserName(Sequence sequence) 
         {
-            String NameOfMinimumDistance = "";
+            String NameOfUserWithMinimumDifference = "";
             //The Value returned from this function, contains the name of the person that's the closest match.
             double MinimumDistanceBetweenTwoSequences = double.MaxValue;
             //Holds the value of the closest after comparing all the sequences to the sequence required.
@@ -100,7 +100,7 @@ namespace Recorder.MainFuctions
                         {
                             MinimumDistanceBetweenTwoSequences = TrueDistance;
                             //Here I update the minimum distance between two values.
-                            NameOfMinimumDistance = Line;
+                            NameOfUserWithMinimumDifference = Line;
                             //I update the name of the person to line because on the 13th index line, it'll have the name of the person.
                         }
                     skip:
@@ -136,7 +136,7 @@ namespace Recorder.MainFuctions
                 }
             }
             //I return the name of the closest match.
-            return NameOfMinimumDistance;
+            return NameOfUserWithMinimumDifference;
         }
     }
 }

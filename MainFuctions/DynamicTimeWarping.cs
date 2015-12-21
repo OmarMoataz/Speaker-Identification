@@ -9,7 +9,7 @@ namespace Recorder.DynamicTimeWarping
 {
     class DynamicTimeWarpingOperations
     {
-
+        private static int windowSize = 0;
         public static void DTW(Sequence sequenceToBeCompared)
         {
             OpenFileDialog open = new OpenFileDialog();
@@ -28,31 +28,36 @@ namespace Recorder.DynamicTimeWarping
         {
             int numberOfFrames_Sequence1 = sequence1.Frames.Count();
             int numberOfFrames_Sequence2 = sequence2.Frames.Count();
-            double[,] DTW = new double[numberOfFrames_Sequence1 + 1, numberOfFrames_Sequence2 + 1];
 
-            for (int i = 1; i <= numberOfFrames_Sequence1; i++)
-            {
-                DTW[i, 0] = 1e9;
-            }
+            //re set window parameter
+            windowSize = Math.Max(windowSize, Math.Abs(numberOfFrames_Sequence1 - numberOfFrames_Sequence2)); 
+
+            double[,] DTW = new double[2, numberOfFrames_Sequence2 + 1];
+
             for (int i = 1; i <= numberOfFrames_Sequence2; i++)
             {
-                DTW[0, i] = 1e9;
+                DTW[1, i] = DTW[0, i] = double.MaxValue;
             }
             DTW[0, 0] = 0;
+            DTW[1, 0] = double.MaxValue;
 
+            //Applying dimension compression to DTW array
             for (int i = 1; i <= numberOfFrames_Sequence1; i++)
             {
-                for (int j = 1; j <= numberOfFrames_Sequence2; j++)
+                for (int j = Math.Max(1, i - windowSize); j <= Math.Min(numberOfFrames_Sequence2, i + windowSize); j++)
                 {
                     double cost = distance(sequence1.Frames[i - 1], sequence2.Frames[j - 1]);
-                    DTW[i, j] = cost + Math.Min(DTW[i - 1, j],
-                                            Math.Min(DTW[i, j - 1],
-                                            DTW[i - 1, j - 1]));
+                    DTW[i % 2, j] = cost + Math.Min(DTW[(i + 1) %2, j],
+                                            Math.Min(DTW[i % 2, j - 1],
+                                            DTW[(i + 1) % 2, j - 1]));
                 }
+                DTW[0, 0] = double.MaxValue;
             }
-            return DTW[numberOfFrames_Sequence1, numberOfFrames_Sequence2];
+
+            return DTW[numberOfFrames_Sequence1 % 2, numberOfFrames_Sequence2];
         }
 
+        //Calculates the distance between two frames
         private static double distance(MFCCFrame frame1, MFCCFrame frame2)
         {
             double difference_distance = 0;
@@ -66,31 +71,36 @@ namespace Recorder.DynamicTimeWarping
             return Math.Sqrt(difference_distance);
         }
 
+        //Lower bounding function used for pruning
         public static double LowerBound_Kim(Sequence sequence1, Sequence sequence2)
         {
             int sizeOfSequence1= sequence1.Frames.Count();
             int sizeOfSequence2= sequence2.Frames.Count();
 
-            MFCCFrame firstElementInFirstSequence = sequence1.Frames[0];
-            MFCCFrame firstElementInSecondSequence = sequence2.Frames[0];
-            MFCCFrame lastElementInFirstSequence = sequence1.Frames[sizeOfSequence1 - 1];
-            MFCCFrame lastElementInSecondSequence = sequence2.Frames[sizeOfSequence2 - 1];
+            MFCCFrame firstElementInSequence1 = sequence1.Frames[0];
+            MFCCFrame firstElementInSequence2 = sequence2.Frames[0];
+            MFCCFrame lastElementInSequence1 = sequence1.Frames[sizeOfSequence1 - 1];
+            MFCCFrame lastElementInSequence2 = sequence2.Frames[sizeOfSequence2 - 1];
 
+            //order the two sequences to get maximum and minimum elements
             sequence1.Frames.OrderBy(f => f.Features);
             sequence2.Frames.OrderBy(f => f.Features);
 
-            MFCCFrame minimumElementInFirstSequence = sequence1.Frames[0];
-            MFCCFrame minimumElementInSecondSequence = sequence2.Frames[0];
-            MFCCFrame maximumElementInFirstSequence = sequence1.Frames[sizeOfSequence1 - 1];
-            MFCCFrame maximumElementInSecondSequence = sequence2.Frames[sizeOfSequence2 - 1];
+            MFCCFrame minimumElementInSequence1 = sequence1.Frames[0];
+            MFCCFrame minimumElementInSequence2 = sequence2.Frames[0];
+            MFCCFrame maximumElementInSequence1 = sequence1.Frames[sizeOfSequence1 - 1];
+            MFCCFrame maximumElementInSequence2 = sequence2.Frames[sizeOfSequence2 - 1];
             
-            double distanceBetweenFirsts = distance(firstElementInFirstSequence, firstElementInSecondSequence);
-            double distanceBetweenLasts = distance(lastElementInFirstSequence, lastElementInSecondSequence);
-            double distanceBetweenMinimums = distance(minimumElementInFirstSequence, minimumElementInSecondSequence);
-            double distanceBetweenMaximums = distance(maximumElementInFirstSequence, maximumElementInSecondSequence);
-            double lowerBoundValue = Math.Min(
-                                    Math.Min(distanceBetweenFirsts, distanceBetweenLasts),
-                                    Math.Min(distanceBetweenMinimums, distanceBetweenMaximums));
+            double differenceBetweenFirsts = distance(firstElementInSequence1, firstElementInSequence2);
+            double differenceBetweenLasts = distance(lastElementInSequence1, lastElementInSequence2);
+            double differenceBetweenMinimums = distance(minimumElementInSequence1, minimumElementInSequence2);
+            double differenceBetweenMaximums = distance(maximumElementInSequence1, maximumElementInSequence2);
+            
+            double lowerBoundValue = Math.Max(
+                                    Math.Max(differenceBetweenFirsts * differenceBetweenFirsts, differenceBetweenLasts * differenceBetweenLasts),
+                                    Math.Max(differenceBetweenMinimums * differenceBetweenMinimums, differenceBetweenMaximums * differenceBetweenMaximums));
+
+            //return maximum squared difference of the two sequences first, last, minimum and maximum elements
             return lowerBoundValue;
         }
     }
