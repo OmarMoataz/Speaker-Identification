@@ -240,7 +240,7 @@ namespace Recorder
             else
             {
                 btnAdd.Enabled = this.path != null || this.encoder != null;
-                btnIdentify.Enabled = true;
+                btnIdentify.Enabled = SavedRadio.Checked || RecordRadio.Checked; 
                 btnPlay.Enabled = this.path != null || this.encoder != null;//stream != null;
                 btnStop.Enabled = false;
                 btnRecord.Enabled = true;
@@ -311,7 +311,7 @@ namespace Recorder
             s.Show();
         }
 
-        //Identify button opens the file explorer to choose a pre existing audio file to be identified
+        //Identify button opens the file explorer to choose a pre existing audio file or recorded sound to be identified
         private void btnIdentify_Click(object sender, EventArgs e)
         {
             if (sequence != null)
@@ -323,23 +323,57 @@ namespace Recorder
                 sequence = null;
                 return;
             }
-
-            OpenFileDialog open = new OpenFileDialog();
-            if (open.ShowDialog() == DialogResult.OK)
+            else if (SavedRadio.Checked)
             {
-                isRecorded = false;
-                path = open.FileName;
-                //Open the selected audio file
-                signal = AudioOperations.OpenAudioFile(path);
-                sequence = AudioOperations.ExtractFeatures(signal);
-
-                string UserName = FileOperations.GetUserName(sequence);
-
-                MessageBox.Show(UserName);
                 updateButtons();
-                sequence = null;
+                OpenFileDialog open = new OpenFileDialog();
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+                    isRecorded = false;
+                    path = open.FileName;
+                    //Open the selected audio file
+                    signal = AudioOperations.OpenAudioFile(path);
+                    sequence = AudioOperations.ExtractFeatures(signal);
+
+                    string UserName = FileOperations.GetUserName(sequence);
+
+                    MessageBox.Show(UserName);
+                    updateButtons();
+                    sequence = null;
+                }
+            }
+            //Dev: Omar Moataz Abdel-Wahed Attia
+            else
+            {
+                updateButtons();
+                if (isRecorded)
+                {
+                    InitializeDecoder();        //Initializes a decoder to get the value of the recorded stream.
+                    AudioSignal signal = new AudioSignal(); //Signal sent to Feature extraction function.
+                    signal.data = new double[this.decoder.frames];  //Reserve space for double array that will be filled later.
+                    signal.sampleRate = this.decoder.GetTempSignal().SampleRate; 
+                    //TempSignal has the double array I need to extract features, Check function Decoder::getWholeSignal() for more explanation.
+                    this.decoder.GetTempSignal().CopyTo(signal.data);
+                    //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
+                    Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
+                    MessageBox.Show(FileOperations.GetUserName(ToBeMatched)); //Get Name Of User that has the closest match.
+                }
+                else
+                    MessageBox.Show("Please record your voice first!"); //In case the user tries to identify with recording any sound.
             }
         }
+
+        private void SavedRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            updateButtons();
+        }
+
+        private void RecordRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            updateButtons();
+        }
+
+        
 
     }
 }

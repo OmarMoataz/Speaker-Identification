@@ -51,8 +51,12 @@
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.SavedRadio = new System.Windows.Forms.RadioButton();
+            this.RecordRadio = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -229,11 +233,47 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.RecordRadio);
+            this.groupBox1.Controls.Add(this.SavedRadio);
+            this.groupBox1.Location = new System.Drawing.Point(73, 149);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(82, 63);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Identify";
+            // 
+            // SavedRadio
+            // 
+            this.SavedRadio.AutoSize = true;
+            this.SavedRadio.Location = new System.Drawing.Point(7, 20);
+            this.SavedRadio.Name = "SavedRadio";
+            this.SavedRadio.Size = new System.Drawing.Size(56, 17);
+            this.SavedRadio.TabIndex = 0;
+            this.SavedRadio.TabStop = true;
+            this.SavedRadio.Text = "Saved";
+            this.SavedRadio.UseVisualStyleBackColor = true;
+            this.SavedRadio.CheckedChanged += new System.EventHandler(this.SavedRadio_CheckedChanged);
+            // 
+            // RecordRadio
+            // 
+            this.RecordRadio.AutoSize = true;
+            this.RecordRadio.Location = new System.Drawing.Point(7, 40);
+            this.RecordRadio.Name = "RecordRadio";
+            this.RecordRadio.Size = new System.Drawing.Size(60, 17);
+            this.RecordRadio.TabIndex = 1;
+            this.RecordRadio.TabStop = true;
+            this.RecordRadio.Text = "Record";
+            this.RecordRadio.UseVisualStyleBackColor = true;
+            this.RecordRadio.CheckedChanged += new System.EventHandler(this.RecordRadio_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(323, 151);
+            this.ClientSize = new System.Drawing.Size(323, 214);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lbLength);
             this.Controls.Add(this.lbPosition);
             this.Controls.Add(this.chart);
@@ -253,6 +293,8 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -276,5 +318,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.Button btnRecord;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton RecordRadio;
+        private System.Windows.Forms.RadioButton SavedRadio;
     }
 }

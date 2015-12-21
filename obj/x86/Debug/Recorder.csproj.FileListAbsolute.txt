@@ -224,3 +224,21 @@ E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.cspr
 E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.exe
 E:\Work\3rd Year 1st Semestre\Algorithms\Speaker Rec\obj\x86\Debug\Recorder.pdb
 >>>>>>> 45a01955c9381c92586b0b7bbfb8fa10f0f4f993
+E:\Work\Projects\Speaker Identification\bin\Debug\Recorder.exe
+E:\Work\Projects\Speaker Identification\bin\Debug\Recorder.pdb
+E:\Work\Projects\Speaker Identification\bin\Debug\AForge.dll
+E:\Work\Projects\Speaker Identification\bin\Debug\AForge.Math.dll
+E:\Work\Projects\Speaker Identification\bin\Debug\SharpDX.DirectSound.dll
+E:\Work\Projects\Speaker Identification\bin\Debug\SharpDX.dll
+E:\Work\Projects\Speaker Identification\bin\Debug\AForge.xml
+E:\Work\Projects\Speaker Identification\bin\Debug\AForge.Math.xml
+E:\Work\Projects\Speaker Identification\bin\Debug\SharpDX.xml
+E:\Work\Projects\Speaker Identification\bin\Debug\SharpDX.DirectSound.xml
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.csprojResolveAssemblyReference.cache
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.GUI.AddUser.resources
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.MainForm.resources
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.Properties.Resources.resources
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.csproj.GenerateResource.Cache
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.exe
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.pdb
+E:\Work\Projects\Speaker Identification\obj\x86\Debug\Recorder.GUI.IdentificationOptions.resources
