@@ -16,6 +16,8 @@ namespace Recorder.Recorder
 
         private IAudioOutput output;
 
+        private Signal TempSignal;
+
         public double[] wholeSignal{ get; set;}
 
         public int Position { get; set; }
@@ -78,13 +80,16 @@ namespace Recorder.Recorder
             }
         }
 
+
         private double[] getWholeSignal()
         {
-            Signal tempSignal = this.decoder.Decode(this.frames);
+            TempSignal = this.decoder.Decode(this.frames);
             double[] wholeSignal = new double[this.frames];
-            tempSignal.CopyTo(wholeSignal);
+            TempSignal.CopyTo(wholeSignal);
             return wholeSignal;
         }
+
+
 
         public void FillNewFrame(NewFrameRequestedEventArgs frameRequestArgs) 
         {
@@ -119,6 +124,12 @@ namespace Recorder.Recorder
         public Signal Decode(int frames)
         {
            return this.decoder.Decode(frames);
+        }
+        
+        //Dev: Omar Moataz Abdel-Wahed Attia
+        public Signal GetTempSignal()
+        {
+            return TempSignal;
         }
     }
 }
