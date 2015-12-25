@@ -354,15 +354,21 @@ namespace Recorder
                     InitializeDecoder();        //Initializes a decoder to get the value of the recorded stream.
                     AudioSignal signal = new AudioSignal(); //Signal sent to Feature extraction function.
                     signal.data = new double[this.decoder.frames];  //Reserve space for double array that will be filled later.
-                    signal.sampleRate = this.decoder.GetTempSignal().SampleRate; 
+                    signal.sampleRate = this.decoder.GetTempSignal().SampleRate;
                     //TempSignal has the double array I need to extract features, Check function Decoder::getWholeSignal() for more explanation.
                     this.decoder.GetTempSignal().CopyTo(signal.data);
                     //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
                     Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
-                    MessageBox.Show(FileOperations.GetUserName(ToBeMatched)); //Get Name Of User that has the closest match.
+                    //Get name of user that has the closest match.
+                    string UserName = FileOperations.GetUserName(sequence);
+                    MessageBox.Show(UserName);
+                    updateButtons();
+                    sequence = null;
                 }
                 else
-                    MessageBox.Show("Please record your voice first!"); //In case the user tries to identify with recording any sound.
+                {
+                    MessageBox.Show("Please record your voice first!"); //In case the user tries to identify without recording any sound.
+                }
             }
         }
 
