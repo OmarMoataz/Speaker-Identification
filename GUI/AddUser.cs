@@ -35,6 +35,7 @@ namespace Recorder.GUI
             else
             {
                 FileOperations.SaveSequenceInDatabase(sequence, textBox1.Text, signal);
+                MessageBox.Show("The User has been saved!");
                 this.Hide();
             }
         }

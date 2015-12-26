@@ -13,9 +13,8 @@ namespace Recorder.MainFuctions
     {
         public static void SaveSequenceInDatabase(Sequence toBeSavedSequence, string userName, AudioSignal signal)
         {
-            //UPDATE1
+            //UPDATE
             //you should save the four values in the last row before the username, with the order (first, last, min, max) respectively
-
 
             FileStream SavingStream = new FileStream("savedSequences.txt", FileMode.Append);
             StreamWriter Saving = new StreamWriter(SavingStream);
@@ -47,6 +46,8 @@ namespace Recorder.MainFuctions
                 minElement = Math.Min(minElement, signal.data[i]);
             }
 
+            // UPDATE: On 26/12 @ 6:50 - Writing the 4 values into the file
+            Saving.WriteLine(firstElement + " " + lastElement + " " + minElement + " " + maxElement);
             Saving.WriteLine("UserName:" + userName);
             Saving.Close();
         }
