@@ -11,24 +11,43 @@ namespace Recorder.MainFuctions
     //Dev: Abdelrahman Othman Helal
     static class FileOperations
     {
-        public static void SaveSequenceInDatabase(Sequence ToBeSavedSequence, string UserName)
+        public static void SaveSequenceInDatabase(Sequence toBeSavedSequence, string userName, AudioSignal signal)
         {
+            //UPDATE1
+            //you should save the four values in the last row before the username, with the order (first, last, min, max) respectively
+
+
             FileStream SavingStream = new FileStream("savedSequences.txt", FileMode.Append);
             StreamWriter Saving = new StreamWriter(SavingStream);
             double TempFeature = 0f;
             StringBuilder FramesRow = new StringBuilder();
 
+            int size = signal.data.Length;
+            double maxElement = double.MinValue,
+                    minElement = double.MaxValue,
+                    firstElement, lastElement;
+            
             for (int i = 0; i < 13; i++)
             {
-                for (int j = 0; j < ToBeSavedSequence.Frames.Length; j++)
+                for (int j = 0; j < toBeSavedSequence.Frames.Length; j++)
                 {
-                    TempFeature = ToBeSavedSequence.Frames[j].Features[i];
+                    TempFeature = toBeSavedSequence.Frames[j].Features[i];
                     FramesRow.Append(TempFeature.ToString() + "|");
                 }
                 Saving.WriteLine(FramesRow);
                 FramesRow.Clear(); //clear it to start a new row (VIP)
             }
-            Saving.WriteLine("UserName:" + UserName);
+
+            firstElement = signal.data[0];
+            lastElement = signal.data[size - 1];
+
+            for (int i = 0; i < size; i++)
+            {
+                maxElement = Math.Max(maxElement, signal.data[i]);
+                minElement = Math.Min(minElement, signal.data[i]);
+            }
+
+            Saving.WriteLine("UserName:" + userName);
             Saving.Close();
         }
 
@@ -71,8 +90,12 @@ namespace Recorder.MainFuctions
         on the 14th line, it will contain the name of the person that's tied to the previous sequence.
         */
         //======================================================
-        public static string GetUserName(Sequence sequence) 
+        public static string GetUserName(Sequence sequence, AudioSignal signal) 
         {
+            //UPDATE1
+            //you should fill the four variables (firstelement, lastelement, maxelement, minelement) with the 13th line, respectively
+            //and return a struct with a string and double, representing the username and the minimumdistance, respectively
+
             String NameOfUserWithMinimumDifference = "";
             //The Value returned from this function, contains the name of the person that's the closest match.
             double MinimumDistanceBetweenTwoSequences = double.MaxValue;
@@ -87,11 +110,13 @@ namespace Recorder.MainFuctions
                 int Index = 0;
                 //Holds the value of the current frame
                 bool flag = true;
+                //Variables used in lowerbounding
+                double FirstElement = 0, LastElement = 0, MaxElement = 0, MinElement = 0; 
                 while ((Line = Reader.ReadLine()) != null)
                 {
                     if (Index == 13)
                     {
-                        double LowerBoundDistance = DynamicTimeWarpingOperations.LowerBound_Kim(sequence, ToBeCompared);
+                        double LowerBoundDistance = DynamicTimeWarpingOperations.LowerBound_Kim(signal, FirstElement, LastElement, MinElement, MaxElement);
                         if (LowerBoundDistance > MinimumDistanceBetweenTwoSequences) goto skip;
                         double TrueDistance = DynamicTimeWarpingOperations.DTW_Distance(sequence, ToBeCompared);
                         //Consider Current a temp variable that holds the minimum distance returned from comparing the two sequences.

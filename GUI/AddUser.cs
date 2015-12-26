@@ -14,10 +14,12 @@ namespace Recorder.GUI
 {
     public partial class AddUser : Form
     {
-        Sequence sequence = new Sequence();
-        public AddUser(Sequence seq)
+        private Sequence sequence = new Sequence();
+        private AudioSignal signal = new AudioSignal();
+        public AddUser(Sequence sequence_, AudioSignal signal_)
         {
-            sequence = seq;
+            sequence = sequence_;
+            signal = signal_;
             InitializeComponent();
         }
 
@@ -32,7 +34,7 @@ namespace Recorder.GUI
 
             else
             {
-                FileOperations.SaveSequenceInDatabase(sequence, textBox1.Text);
+                FileOperations.SaveSequenceInDatabase(sequence, textBox1.Text, signal);
                 this.Hide();
             }
         }

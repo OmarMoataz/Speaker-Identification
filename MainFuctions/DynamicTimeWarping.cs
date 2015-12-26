@@ -72,29 +72,26 @@ namespace Recorder.DynamicTimeWarping
         }
 
         //Lower bounding function used for pruning
-        public static double LowerBound_Kim(Sequence sequence1, Sequence sequence2)
+        public static double LowerBound_Kim(AudioSignal signal, double firstElement, double lastElement, double minElement, double maxElement)
         {
-            int sizeOfSequence1= sequence1.Frames.Count();
-            int sizeOfSequence2= sequence2.Frames.Count();
+            int size= signal.data.Length;
+            double maxElement1 = double.MinValue,
+                    minElement1 = double.MaxValue,
+                    firstElement1, lastElement1;
 
-            MFCCFrame firstElementInSequence1 = sequence1.Frames[0];
-            MFCCFrame firstElementInSequence2 = sequence2.Frames[0];
-            MFCCFrame lastElementInSequence1 = sequence1.Frames[sizeOfSequence1 - 1];
-            MFCCFrame lastElementInSequence2 = sequence2.Frames[sizeOfSequence2 - 1];
+            firstElement1 = signal.data[0];
+            lastElement1 = signal.data[size - 1];
 
-            //order the two sequences to get maximum and minimum elements
-            sequence1.Frames.OrderBy(f => f.Features);
-            sequence2.Frames.OrderBy(f => f.Features);
+            for (int i = 0; i < size; i++)
+            {
+                maxElement1 = Math.Max(maxElement1, signal.data[i]);
+                minElement1 = Math.Min(minElement1, signal.data[i]);
+            }
 
-            MFCCFrame minimumElementInSequence1 = sequence1.Frames[0];
-            MFCCFrame minimumElementInSequence2 = sequence2.Frames[0];
-            MFCCFrame maximumElementInSequence1 = sequence1.Frames[sizeOfSequence1 - 1];
-            MFCCFrame maximumElementInSequence2 = sequence2.Frames[sizeOfSequence2 - 1];
-            
-            double differenceBetweenFirsts = distance(firstElementInSequence1, firstElementInSequence2);
-            double differenceBetweenLasts = distance(lastElementInSequence1, lastElementInSequence2);
-            double differenceBetweenMinimums = distance(minimumElementInSequence1, minimumElementInSequence2);
-            double differenceBetweenMaximums = distance(maximumElementInSequence1, maximumElementInSequence2);
+            double differenceBetweenFirsts = Math.Abs(firstElement1 - firstElement);
+            double differenceBetweenLasts = Math.Abs(lastElement1 - lastElement);
+            double differenceBetweenMinimums = Math.Abs(minElement1 - minElement);
+            double differenceBetweenMaximums = Math.Abs(maxElement1 - maxElement);
             
             double lowerBoundValue = Math.Max(
                                     Math.Max(differenceBetweenFirsts * differenceBetweenFirsts, differenceBetweenLasts * differenceBetweenLasts),

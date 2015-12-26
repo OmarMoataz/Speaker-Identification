@@ -310,25 +310,21 @@ namespace Recorder
             
             if (sequence == null) return;
 
-            AddUser s = new AddUser(sequence);
+            AddUser s = new AddUser(sequence, signal);
             s.Show();
         }
 
         //Identify button opens the file explorer to choose a pre existing audio file or recorded sound to be identified
         private void btnIdentify_Click(object sender, EventArgs e)
         {
-            if (sequence != null)
+            if (sequence != null && RecordRadio.Checked == false)
             {
-                string UserName = FileOperations.GetUserName(sequence);
+                string UserName = FileOperations.GetUserName(sequence, signal);
 
                 MessageBox.Show(UserName);
-                updateButtons();
-                sequence = null;
-                return;
             }
             else if (SavedRadio.Checked)
             {
-                updateButtons();
                 OpenFileDialog open = new OpenFileDialog();
                 if (open.ShowDialog() == DialogResult.OK)
                 {
@@ -337,18 +333,14 @@ namespace Recorder
                     //Open the selected audio file
                     signal = AudioOperations.OpenAudioFile(path);
                     sequence = AudioOperations.ExtractFeatures(signal);
-
-                    string UserName = FileOperations.GetUserName(sequence);
+                    string UserName = FileOperations.GetUserName(sequence, signal);
 
                     MessageBox.Show(UserName);
-                    updateButtons();
-                    sequence = null;
                 }
             }
             //Dev: Omar Moataz Abdel-Wahed Attia
             else
             {
-                updateButtons();
                 if (isRecorded)
                 {
                     InitializeDecoder();        //Initializes a decoder to get the value of the recorded stream.
@@ -360,16 +352,18 @@ namespace Recorder
                     //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
                     Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
                     //Get name of user that has the closest match.
-                    string UserName = FileOperations.GetUserName(sequence);
+                    string UserName = FileOperations.GetUserName(sequence, signal);
+
                     MessageBox.Show(UserName);
-                    updateButtons();
-                    sequence = null;
                 }
                 else
                 {
                     MessageBox.Show("Please record your voice first!"); //In case the user tries to identify without recording any sound.
                 }
             }
+
+            sequence = null;
+            updateButtons();
         }
 
         private void SavedRadio_CheckedChanged(object sender, EventArgs e)
