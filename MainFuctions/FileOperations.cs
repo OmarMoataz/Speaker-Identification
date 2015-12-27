@@ -8,6 +8,12 @@ using Recorder.DynamicTimeWarping;
 
 namespace Recorder.MainFuctions
 {
+    //Dev: Omar Moataz Abdel-Wahed Attia
+    public class  ClosestMatch
+    {
+        public string UserName;    //Name of the closest match.
+        public double MinimumDistance; //Minimum distance to the closest match.
+    }
     //Dev: Abdelrahman Othman Helal
     static class FileOperations
     {
@@ -90,15 +96,16 @@ namespace Recorder.MainFuctions
         on the 14th line, it will contain the name of the person that's tied to the previous sequence.
         */
         //======================================================
-        public static string GetUserName(Sequence sequence, AudioSignal signal) 
+        public static ClosestMatch GetUserName(Sequence sequence, AudioSignal signal) 
         {
             //UPDATE1
             //you should fill the four variables (firstelement, lastelement, maxelement, minelement) with the 13th line, respectively
             //and return a struct with a string and double, representing the username and the minimumdistance, respectively
 
-            String NameOfUserWithMinimumDifference = "";
+            ClosestMatch User = new ClosestMatch();
+            User.UserName = "";
             //The Value returned from this function, contains the name of the person that's the closest match.
-            double MinimumDistanceBetweenTwoSequences = double.MaxValue;
+            User.MinimumDistance = double.MaxValue;
             //Holds the value of the closest after comparing all the sequences to the sequence required.
             using (StreamReader Reader = new StreamReader("savedSequences.txt"))
             {
@@ -109,31 +116,43 @@ namespace Recorder.MainFuctions
                 //This line string contatins every line I go through in the file
                 int Index = 0;
                 //Holds the value of the current frame
-                bool flag = true;
+                bool flag = true, Updated = false;
                 //Variables used in lowerbounding
                 double FirstElement = 0, LastElement = 0, MaxElement = 0, MinElement = 0; 
                 while ((Line = Reader.ReadLine()) != null)
                 {
                     if (Index == 13)
                     {
+                        string[] Temp = Line.Split('|');       /*Just a string array that holds the values I'll take into FirstElement, 
+                        LastElement, MinElement and MaxElement.*/
+                        FirstElement = double.Parse(Temp[0]);
+                        LastElement = double.Parse(Temp[1]);
+                        MaxElement = double.Parse(Temp[2]);
+                        MinElement = double.Parse(Temp[3]);
                         double LowerBoundDistance = DynamicTimeWarpingOperations.LowerBound_Kim(signal, FirstElement, LastElement, MinElement, MaxElement);
-                        if (LowerBoundDistance > MinimumDistanceBetweenTwoSequences) goto skip;
+                        if (LowerBoundDistance > User.MinimumDistance) goto skip;
                         double TrueDistance = DynamicTimeWarpingOperations.DTW_Distance(sequence, ToBeCompared);
                         //Consider Current a temp variable that holds the minimum distance returned from comparing the two sequences.
-                        if (TrueDistance < MinimumDistanceBetweenTwoSequences)
+                        if (TrueDistance < User.MinimumDistance)
                         //Here I compare the two Distances together to see if I need to update the minimum or not.
                         {
-                            MinimumDistanceBetweenTwoSequences = TrueDistance;
+                            User.MinimumDistance = TrueDistance;
+                            Updated = true;
                             //Here I update the minimum distance between two values.
-                            NameOfUserWithMinimumDifference = Line;
-                            //I update the name of the person to line because on the 13th index line, it'll have the name of the person.
                         }
                     skip:
                         flag = true;
                         ToBeCompared = new Sequence();
                         //This is a reinitialization just to clear out old values from the previous iteration
+                    }
+                    else if(Index == 14)
+                    {
+                        if(Updated)
+                            User.UserName = Line;
+                            //I update the name of the person to line because on the 13th index line, it'll have the name of the person.
+                        Updated = false; //resetting the update value.
                         Index = -1;
-                        //Initialize the index to -1 because it will be incremented at the end of this loop so, I want the value to be 0
+                        //So, it goes back to 0 when the loop continues.
                     }
                     else
                     {
@@ -160,8 +179,8 @@ namespace Recorder.MainFuctions
                     //I increment the index of the 2D array for the next iteration through the file.
                 }
             }
-            //I return the name of the closest match.
-            return NameOfUserWithMinimumDifference;
+            return User;
+            //I return type ClosestMatch.
         }
     }
 }

@@ -317,11 +317,11 @@ namespace Recorder
         //Identify button opens the file explorer to choose a pre existing audio file or recorded sound to be identified
         private void btnIdentify_Click(object sender, EventArgs e)
         {
+            ClosestMatch User;
             if (sequence != null && RecordRadio.Checked == false)
             {
-                string UserName = FileOperations.GetUserName(sequence, signal);
-
-                MessageBox.Show(UserName);
+                User = FileOperations.GetUserName(sequence, signal);
+                MessageBox.Show(User.UserName);
             }
             else if (SavedRadio.Checked)
             {
@@ -333,9 +333,9 @@ namespace Recorder
                     //Open the selected audio file
                     signal = AudioOperations.OpenAudioFile(path);
                     sequence = AudioOperations.ExtractFeatures(signal);
-                    string UserName = FileOperations.GetUserName(sequence, signal);
+                    User = FileOperations.GetUserName(sequence, signal);
 
-                    MessageBox.Show(UserName);
+                    MessageBox.Show(User.UserName);
                 }
             }
             //Dev: Omar Moataz Abdel-Wahed Attia
@@ -352,9 +352,9 @@ namespace Recorder
                     //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
                     Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
                     //Get name of user that has the closest match.
-                    string UserName = FileOperations.GetUserName(sequence, signal);
+                    User = FileOperations.GetUserName(sequence, signal);
 
-                    MessageBox.Show(UserName);
+                    MessageBox.Show(User.UserName);
                 }
                 else
                 {
