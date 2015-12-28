@@ -306,12 +306,31 @@ namespace Recorder
         //Add button opens file explorer to save the audio file as well as adding its sequence to the database
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            saveToolStripMenuItem_Click(sender, e);
-            
-            if (sequence == null) return;
+            // UPDATE: Now the user has the ability to save the WAV file on the disk or not to save it before saving the records into the file
+            DialogResult userChoise = MessageBox.Show("Do You want to save the .WAV file on the disk?" + "\n" + "If you clicked on YES a WAV file will be created on your drive, and the voice will be extracted and saved into the database." + "\n" + "If you clicked on NO, the voice will only be extracted to the database without saving it on the drive.", "Storage Mode ..", MessageBoxButtons.YesNo);
+            if (userChoise == DialogResult.Yes)
+            {
+                saveToolStripMenuItem_Click(sender, e);
+                if (sequence == null) return;
+                AddUser s = new AddUser(sequence, signal);
+                s.Show();
+            }
 
-            AddUser s = new AddUser(sequence, signal);
-            s.Show();
+            else if (userChoise == DialogResult.No) {
+                // JUST FOR TESTING - PASSED!
+                InitializeDecoder(); //Initializes a decoder to get the value of the recorded stream.
+                AudioSignal signal = new AudioSignal(); //Signal sent to Feature extraction function.
+                signal.data = new double[this.decoder.frames];  //Reserve space for double array that will be filled later.
+                signal.sampleRate = this.decoder.GetTempSignal().SampleRate;
+                //TempSignal has the double array I need to extract features, Check function Decoder::getWholeSignal() for more explanation.
+                this.decoder.GetTempSignal().CopyTo(signal.data);
+                //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
+                Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
+                //Get name of user that has the closest match.
+                if (ToBeMatched == null) return;
+                AddUser s = new AddUser(ToBeMatched, signal);
+                s.Show();
+            }
         }
 
         //Identify button opens the file explorer to choose a pre existing audio file or recorded sound to be identified
@@ -349,6 +368,7 @@ namespace Recorder
                     signal.sampleRate = this.decoder.GetTempSignal().SampleRate;
                     //TempSignal has the double array I need to extract features, Check function Decoder::getWholeSignal() for more explanation.
                     this.decoder.GetTempSignal().CopyTo(signal.data);
+                    signal.signalLengthInMilliSec = this.decoder.GetTempSignal().Length;
                     //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
                     Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
                     //Get name of user that has the closest match.
@@ -379,6 +399,16 @@ namespace Recorder
         private void MainForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            updateButtons();
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            updateButtons();
         }
     }
 }

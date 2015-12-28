@@ -15,3 +15,20 @@ E:\Work\Projects\Speaker ID\obj\x86\Debug\Recorder.Properties.Resources.resource
 E:\Work\Projects\Speaker ID\obj\x86\Debug\Recorder.csproj.GenerateResource.Cache
 E:\Work\Projects\Speaker ID\obj\x86\Debug\Recorder.exe
 E:\Work\Projects\Speaker ID\obj\x86\Debug\Recorder.pdb
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\Recorder.exe
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\Recorder.pdb
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\AForge.dll
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\AForge.Math.dll
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\SharpDX.DirectSound.dll
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\SharpDX.dll
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\AForge.xml
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\AForge.Math.xml
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\SharpDX.xml
+C:\Users\AbdelrahmanOthman\Documents\recorder\bin\Debug\SharpDX.DirectSound.xml
+C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.csprojResolveAssemblyReference.cache
+C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.GUI.AddUser.resources
+C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.MainForm.resources
+C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.Properties.Resources.resources
+C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.csproj.GenerateResource.Cache
+C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.exe
+C:\Users\AbdelrahmanOthman\Documents\recorder\obj\x86\Debug\Recorder.pdb
