@@ -368,11 +368,10 @@ namespace Recorder
                     signal.sampleRate = this.decoder.GetTempSignal().SampleRate;
                     //TempSignal has the double array I need to extract features, Check function Decoder::getWholeSignal() for more explanation.
                     this.decoder.GetTempSignal().CopyTo(signal.data);
-                    signal.signalLengthInMilliSec = this.decoder.GetTempSignal().Length;
                     //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
                     Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
                     //Get name of user that has the closest match.
-                    User = FileOperations.GetUserName(sequence, signal);
+                    User = FileOperations.GetUserName(ToBeMatched, signal);
 
                     MessageBox.Show(User.UserName);
                 }
