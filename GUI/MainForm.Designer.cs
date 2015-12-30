@@ -39,6 +39,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnRecord = new System.Windows.Forms.Button();
@@ -55,9 +56,8 @@
             this.RecordRadio = new System.Windows.Forms.RadioButton();
             this.SavedRadio = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.WithPruningRadioBTN = new System.Windows.Forms.RadioButton();
             this.WithOutPruningRadioBTN = new System.Windows.Forms.RadioButton();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.WithPruningRadioBTN = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -118,6 +118,12 @@
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.optionsToolStripMenuItem.Text = "Edit";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(22, 20);
+            this.toolStripMenuItem1.Text = " ";
             // 
             // openFileDialog1
             // 
@@ -265,6 +271,7 @@
             // SavedRadio
             // 
             this.SavedRadio.AutoSize = true;
+            this.SavedRadio.Checked = true;
             this.SavedRadio.Location = new System.Drawing.Point(7, 20);
             this.SavedRadio.Name = "SavedRadio";
             this.SavedRadio.Size = new System.Drawing.Size(75, 17);
@@ -284,18 +291,7 @@
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Running Mode";
-            // 
-            // WithPruningRadioBTN
-            // 
-            this.WithPruningRadioBTN.AutoSize = true;
-            this.WithPruningRadioBTN.Location = new System.Drawing.Point(7, 19);
-            this.WithPruningRadioBTN.Name = "WithPruningRadioBTN";
-            this.WithPruningRadioBTN.Size = new System.Drawing.Size(89, 17);
-            this.WithPruningRadioBTN.TabIndex = 0;
-            this.WithPruningRadioBTN.TabStop = true;
-            this.WithPruningRadioBTN.Text = "With Pruning ";
-            this.WithPruningRadioBTN.UseVisualStyleBackColor = true;
-            this.WithPruningRadioBTN.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // WithOutPruningRadioBTN
             // 
@@ -304,16 +300,22 @@
             this.WithOutPruningRadioBTN.Name = "WithOutPruningRadioBTN";
             this.WithOutPruningRadioBTN.Size = new System.Drawing.Size(104, 17);
             this.WithOutPruningRadioBTN.TabIndex = 1;
-            this.WithOutPruningRadioBTN.TabStop = true;
             this.WithOutPruningRadioBTN.Text = "Without Pruning ";
             this.WithOutPruningRadioBTN.UseVisualStyleBackColor = true;
             this.WithOutPruningRadioBTN.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
-            // toolStripMenuItem1
+            // WithPruningRadioBTN
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(22, 20);
-            this.toolStripMenuItem1.Text = " ";
+            this.WithPruningRadioBTN.AutoSize = true;
+            this.WithPruningRadioBTN.Checked = true;
+            this.WithPruningRadioBTN.Location = new System.Drawing.Point(7, 19);
+            this.WithPruningRadioBTN.Name = "WithPruningRadioBTN";
+            this.WithPruningRadioBTN.Size = new System.Drawing.Size(89, 17);
+            this.WithPruningRadioBTN.TabIndex = 0;
+            this.WithPruningRadioBTN.TabStop = true;
+            this.WithPruningRadioBTN.Text = "With Pruning ";
+            this.WithPruningRadioBTN.UseVisualStyleBackColor = true;
+            this.WithPruningRadioBTN.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // MainForm
             // 

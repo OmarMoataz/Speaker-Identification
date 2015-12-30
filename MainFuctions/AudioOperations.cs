@@ -52,7 +52,7 @@ namespace Recorder
         /// </summary>
         /// <param name="signal">Audio signal to extract its features</param>
         /// <returns>Sequence of features (13 x NumOfFrames)</returns>
-        public static Sequence ExtractFeatures(AudioSignal signal)
+        public static Sequence ExtractFeatures(ref AudioSignal signal)
         {
             signal = RemoveSilence(signal);
             return MFCC.MFCC.ExtractFeatures(signal.data, signal.sampleRate);

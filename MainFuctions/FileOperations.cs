@@ -8,10 +8,21 @@ using Recorder.DynamicTimeWarping;
 
 namespace Recorder.MainFuctions
 {
+    //Dev: Omar Moataz Abdel-Wahed Attia
+    public class  ClosestMatch
+    {
+        public string Username;    //Name of the closest match.
+        public double MinimumDistance; //Minimum distance to the closest match.
+        public ClosestMatch()
+        {
+            this.MinimumDistance = double.MaxValue;
+            this.Username = "";
+        }
+    }
     //Dev: Abdelrahman Othman Helal
     static class FileOperations
     {
-        public static void SaveSequenceInDatabase(Sequence toBeSavedSequence, string userName, AudioSignal signal)
+        public static void SaveSequenceInDatabase(Sequence toBeSavedSequence, string username, AudioSignal signal)
         {
             //UPDATE
             //you should save the four values in the last row before the username, with the order (first, last, min, max) respectively
@@ -48,7 +59,7 @@ namespace Recorder.MainFuctions
 
             // UPDATE: On 26/12 @ 6:50 - Writing the 4 values into the file
             Saving.WriteLine(firstElement + " " + lastElement + " " + minElement + " " + maxElement);
-            Saving.WriteLine("UserName:" + userName);
+            Saving.WriteLine("Username:" + username);
             Saving.Close();
         }
 
@@ -65,7 +76,7 @@ namespace Recorder.MainFuctions
                 while (Reading.Peek() != -1) // Reading the lines in the file line by line from the file
                 {
                     line = Reading.ReadLine();//Saving first line in string ( line )  
-                    if (line.StartsWith("UserName"))// Check if line string starts with Username
+                    if (line.StartsWith("Username"))// Check if line string starts with Username
                     {
                         if (line.Contains(name))// Check if the string contains any previous IDs
                         {
@@ -91,50 +102,65 @@ namespace Recorder.MainFuctions
         on the 14th line, it will contain the name of the person that's tied to the previous sequence.
         */
         //======================================================
-        public static string GetUserName(Sequence sequence, AudioSignal signal) 
+        public static ClosestMatch GetUserName(Sequence sequence, AudioSignal signal, bool pruned) 
         {
-            //UPDATE1
-            //you should fill the four variables (firstelement, lastelement, maxelement, minelement) with the 13th line, respectively
-            //and return a struct with a string and double, representing the username and the minimumdistance, respectively
-
-            String NameOfUserWithMinimumDifference = "";
-            //The Value returned from this function, contains the name of the person that's the closest match.
-            double MinimumDistanceBetweenTwoSequences = double.MaxValue;
-            //Holds the value of the closest after comparing all the sequences to the sequence required.
+            ClosestMatch User = new ClosestMatch();
+            //Opening the file.
             using (StreamReader Reader = new StreamReader("savedSequences.txt"))
             {
-                //Opening the file.
-                Sequence ToBeCompared = new Sequence();
                 //Initializing a new sequence.
+                Sequence ToBeCompared = new Sequence();
+                //This line string contains every line I go through in the file
                 string Line;
-                //This line string contatins every line I go through in the file
-                int Index = 0;
                 //Holds the value of the current frame
-                bool flag = true;
+                int Index = 0;
+                bool flag = true, Updated = false;
                 //Variables used in lowerbounding
                 double FirstElement = 0, LastElement = 0, MaxElement = 0, MinElement = 0; 
                 while ((Line = Reader.ReadLine()) != null)
                 {
                     if (Index == 13)
                     {
-                        double LowerBoundDistance = DynamicTimeWarpingOperations.LowerBound_Kim(signal, FirstElement, LastElement, MinElement, MaxElement);
-                        if (LowerBoundDistance > MinimumDistanceBetweenTwoSequences) goto skip;
-                        double TrueDistance = DynamicTimeWarpingOperations.DTW_Distance(sequence, ToBeCompared);
-                        //Consider Current a temp variable that holds the minimum distance returned from comparing the two sequences.
-                        if (TrueDistance < MinimumDistanceBetweenTwoSequences)
-                        //Here I compare the two Distances together to see if I need to update the minimum or not.
+                        double TrueDistance;
+                        string[] Temp = Line.Split(' ');       /*Just a string array that holds the values I'll take into FirstElement, 
+                        LastElement, MinElement and MaxElement.*/
+                        FirstElement = double.Parse(Temp[0]);
+                        LastElement = double.Parse(Temp[1]);
+                        MinElement = double.Parse(Temp[2]);
+                        MaxElement = double.Parse(Temp[3]);
+                        
+                        if (pruned)
                         {
-                            MinimumDistanceBetweenTwoSequences = TrueDistance;
+                            double LowerBoundDistance = DynamicTimeWarpingOperations.LowerBound_Kim(signal, FirstElement, LastElement, MinElement, MaxElement);
+                            if (LowerBoundDistance > User.MinimumDistance) goto skip;
+                            TrueDistance = DynamicTimeWarpingOperations.Pruned_DTW_Distance(sequence, ToBeCompared);
+                        }
+                        else
+                        {
+                            TrueDistance = DynamicTimeWarpingOperations.DTW_Distance(sequence, ToBeCompared);
+                        }
+                        //Here I compare the two Distances together to see if I need to update the minimum or not.
+                        if (TrueDistance < User.MinimumDistance)
+                        {
                             //Here I update the minimum distance between two values.
-                            NameOfUserWithMinimumDifference = Line;
-                            //I update the name of the person to line because on the 13th index line, it'll have the name of the person.
+                            User.MinimumDistance = TrueDistance;
+                            Updated = true;
                         }
                     skip:
+                        //This is a reinitialization just to clear out old values from the previous iteration
                         flag = true;
                         ToBeCompared = new Sequence();
-                        //This is a reinitialization just to clear out old values from the previous iteration
+                    }
+                    else if(Index == 14)
+                    {
+                        if (Updated)
+                        {
+                            //I update the name of the person to line because on the 13th index line, it'll have the name of the person.
+                            User.Username = Line.Substring(9, Line.Length - 9);
+                        }
+                        Updated = false; //resetting the update value.
                         Index = -1;
-                        //Initialize the index to -1 because it will be incremented at the end of this loop so, I want the value to be 0
+                        //So, it goes back to 0 when the loop continues.
                     }
                     else
                     {
@@ -151,18 +177,16 @@ namespace Recorder.MainFuctions
                             {
                                 ToBeCompared.Frames[i] = new MFCCFrame();
                             }
-
                             ToBeCompared.Frames[i].Features[Index] = double.Parse(ExtractedStringsFromLine[i]);
                         }
                         flag = false;
-
                     }
-                    ++Index;
                     //I increment the index of the 2D array for the next iteration through the file.
+                    ++Index;
                 }
             }
-            //I return the name of the closest match.
-            return NameOfUserWithMinimumDifference;
+            //I return type ClosestMatch.
+            return User;
         }
     }
 }

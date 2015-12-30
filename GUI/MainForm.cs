@@ -10,6 +10,8 @@ using Recorder.Recorder;
 using Recorder.MFCC;
 using Recorder.MainFuctions;
 using Recorder.GUI;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Recorder
 {
@@ -43,6 +45,24 @@ namespace Recorder
             chart.SimpleMode = true;
             chart.AddWaveform("wave", Color.Green, 1, false);
             updateButtons();
+
+            List<User> listOfUsers = TestcaseLoader.LoadTestcase1Testing("E:\\Complete SpeakerID Dataset\\TestingList.txt");
+
+            foreach (User user in listOfUsers)
+            {
+                foreach (AudioSignal signal in user.UserTemplates)
+                {
+                    AudioSignal signal_ = signal;
+                    sequence = AudioOperations.ExtractFeatures(ref signal_);
+
+                    ClosestMatch match = FileOperations.GetUserName(sequence, signal, true);
+                    ClosestMatch match1 = FileOperations.GetUserName(sequence, signal, false);
+
+                    Console.WriteLine(user.UserName + " : " + match.Username + ", " + match1.Username);
+                }
+            }
+
+            Console.WriteLine("Done");
         }
 
 
@@ -263,7 +283,7 @@ namespace Recorder
 
                 path = saveFileDialog1.FileName;
                 signal = AudioOperations.OpenAudioFile(path);
-                sequence = AudioOperations.ExtractFeatures(signal);
+                sequence = AudioOperations.ExtractFeatures(ref signal);
 
             }
         }
@@ -291,7 +311,7 @@ namespace Recorder
                 path = open.FileName;
                 //Open the selected audio file
                 signal = AudioOperations.OpenAudioFile(path);
-                sequence = AudioOperations.ExtractFeatures(signal);
+                sequence = AudioOperations.ExtractFeatures(ref signal);
 
                 updateButtons();
             }
@@ -316,19 +336,10 @@ namespace Recorder
                 s.Show();
             }
 
-            else if (userChoise == DialogResult.No) {
-                // JUST FOR TESTING - PASSED!
-                InitializeDecoder(); //Initializes a decoder to get the value of the recorded stream.
-                AudioSignal signal = new AudioSignal(); //Signal sent to Feature extraction function.
-                signal.data = new double[this.decoder.frames];  //Reserve space for double array that will be filled later.
-                signal.sampleRate = this.decoder.GetTempSignal().SampleRate;
-                //TempSignal has the double array I need to extract features, Check function Decoder::getWholeSignal() for more explanation.
-                this.decoder.GetTempSignal().CopyTo(signal.data);
-                //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
-                Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
-                //Get name of user that has the closest match.
-                if (ToBeMatched == null) return;
-                AddUser s = new AddUser(ToBeMatched, signal);
+            else if (userChoise == DialogResult.No)
+            {
+                if (sequence == null) return;
+                AddUser s = new AddUser(sequence, signal);
                 s.Show();
             }
         }
@@ -336,11 +347,21 @@ namespace Recorder
         //Identify button opens the file explorer to choose a pre existing audio file or recorded sound to be identified
         private void btnIdentify_Click(object sender, EventArgs e)
         {
+            ClosestMatch User = new ClosestMatch();
+
             if (sequence != null && RecordRadio.Checked == false)
             {
-                string UserName = FileOperations.GetUserName(sequence, signal);
+                var watch = Stopwatch.StartNew();
 
-                MessageBox.Show(UserName);
+                User = FileOperations.GetUserName(sequence, signal, WithPruningRadioBTN.Checked);
+
+                watch.Stop();
+
+                var elapsedMs = watch.ElapsedMilliseconds;
+
+                Console.WriteLine("Elapsed Milliseconds = " + elapsedMs);
+
+                MessageBox.Show("Username: " + User.Username +"\nWith Minimum Difference: " + User.MinimumDistance.ToString());
             }
             else if (SavedRadio.Checked)
             {
@@ -351,10 +372,19 @@ namespace Recorder
                     path = open.FileName;
                     //Open the selected audio file
                     signal = AudioOperations.OpenAudioFile(path);
-                    sequence = AudioOperations.ExtractFeatures(signal);
-                    string UserName = FileOperations.GetUserName(sequence, signal);
+                    sequence = AudioOperations.ExtractFeatures(ref signal);
+                    
+                    var watch = Stopwatch.StartNew();
 
-                    MessageBox.Show(UserName);
+                    User = FileOperations.GetUserName(sequence, signal, WithPruningRadioBTN.Checked);
+
+                    watch.Stop();
+
+                    var elapsedMs = watch.ElapsedMilliseconds;
+
+                    Console.WriteLine("Elapsed Milliseconds = " + elapsedMs);
+
+                    MessageBox.Show("Username: " + User.Username + "\nWith Minimum Difference: " + User.MinimumDistance.ToString());
                 }
             }
             //Dev: Omar Moataz Abdel-Wahed Attia
@@ -369,11 +399,19 @@ namespace Recorder
                     //TempSignal has the double array I need to extract features, Check function Decoder::getWholeSignal() for more explanation.
                     this.decoder.GetTempSignal().CopyTo(signal.data);
                     //Copies the values of the signal to an object "signal" of type AudioSignal which is sent to feature extraction.
-                    Sequence ToBeMatched = AudioOperations.ExtractFeatures(signal);
+                    sequence = AudioOperations.ExtractFeatures(ref signal);
                     //Get name of user that has the closest match.
-                    string UserName = FileOperations.GetUserName(sequence, signal);
+                    var watch = Stopwatch.StartNew();
 
-                    MessageBox.Show(UserName);
+                    User = FileOperations.GetUserName(sequence, signal, WithPruningRadioBTN.Checked);
+
+                    watch.Stop();
+
+                    var elapsedMs = watch.ElapsedMilliseconds;
+
+                    Console.WriteLine("Elapsed Milliseconds = " + elapsedMs);
+
+                    MessageBox.Show("Username: " + User.Username + "\nWith Minimum Difference: " + User.MinimumDistance.ToString());
                 }
                 else
                 {
@@ -408,6 +446,11 @@ namespace Recorder
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             updateButtons();
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

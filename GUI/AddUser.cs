@@ -25,19 +25,9 @@ namespace Recorder.GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            if (FileOperations.CheckIfUserExist(textBox1.Text))
-            {
-                MessageBox.Show("User Exists!");
-                this.Hide();
-            }
-
-            else
-            {
-                FileOperations.SaveSequenceInDatabase(sequence, textBox1.Text, signal);
-                MessageBox.Show("The User has been saved!");
-                this.Hide();
-            }
+            FileOperations.SaveSequenceInDatabase(sequence, textBox1.Text, signal);
+            MessageBox.Show("The user has been saved!");
+            this.Hide();
         }
 
         private void AddUser_Load(object sender, EventArgs e)

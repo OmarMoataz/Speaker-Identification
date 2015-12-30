@@ -91,7 +91,7 @@ namespace Recorder.MFCC
                 {
                     //FIX1
                     squareMean += frame.Data[i] * frame.Data[i];
-                    // avgZeroCrossing += Math.Abs(Math.Sign(frame.Data[i+1]) - Math.Sign(frame.Data[i])) / 2;
+                    //avgZeroCrossing += Math.Abs(Math.Sign(frame.Data[i+1]) - Math.Sign(frame.Data[i])) / 2;
                     avgZeroCrossing += Math.Abs(Math.Abs(frame.Data[i + 1]) - Math.Abs(frame.Data[i])) / 2.0;
                 }
                 squareMean /= frame.Data.Length;

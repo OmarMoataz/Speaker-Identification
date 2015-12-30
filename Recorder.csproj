@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="MainFuctions\DynamicTimeWarping.cs" />
     <Compile Include="MainFuctions\FileOperations.cs" />
+    <Compile Include="MainFuctions\TestcaseLoader.cs" />
     <Compile Include="MFCC\MFCC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
