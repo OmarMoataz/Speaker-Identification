@@ -33,9 +33,9 @@ namespace Recorder.DynamicTimeWarping
                 for (int j = Math.Max(1, i - windowSize - 1); j <= Math.Min(numberOfFrames_Sequence2, i + windowSize - 1); j++)
                 {
                     double cost = distance(sequence1.Frames[i - 2], sequence2.Frames[j - 1]);
-                    DTW[i % 3, j] = cost + Math.Min(DTW[i % 3, j - 1],          //horizontal
-                                            Math.Min(DTW[(i + 1) % 3, j - 1],      //diagnol
-                                            DTW[(i + 2) % 3, j - 1]));              //far diagonal
+                    DTW[i % 3, j] = cost + Math.Min(DTW[i % 3, j - 1],          //horizontal, stretching
+                                            Math.Min(DTW[(i + 1) % 3, j - 1],      //diagnol, aligning
+                                            DTW[(i + 2) % 3, j - 1]));              //far diagonal, shrinking
                 }
             }
 
@@ -62,9 +62,9 @@ namespace Recorder.DynamicTimeWarping
                 for (int j = 1; j <= numberOfFrames_Sequence2; j++)
                 {
                     double cost = distance(sequence1.Frames[i - 2], sequence2.Frames[j - 1]);
-                    DTW[i % 3, j] = cost + Math.Min(DTW[i % 3, j - 1],          //horizontal
-                                            Math.Min(DTW[(i + 1) % 3, j - 1],      //diagnoal
-                                            DTW[(i + 2) % 3, j - 1]));              //far diagonal
+                    DTW[i % 3, j] = cost + Math.Min(DTW[i % 3, j - 1],          //horizontal, stretching
+                                            Math.Min(DTW[(i + 1) % 3, j - 1],      //diagnoal, aligning
+                                            DTW[(i + 2) % 3, j - 1]));              //far diagonal, shrinking
                 }
             }
 

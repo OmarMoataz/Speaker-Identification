@@ -50,6 +50,7 @@ namespace Recorder
 
             foreach (User user in listOfUsers)
             {
+                int counter = 0, counter1 = 0;
                 foreach (AudioSignal signal in user.UserTemplates)
                 {
                     AudioSignal signal_ = signal;
@@ -59,7 +60,11 @@ namespace Recorder
                     ClosestMatch match1 = FileOperations.GetUserName(sequence, signal, false);
 
                     Console.WriteLine(user.UserName + " : " + match.Username + ", " + match1.Username);
+                    if (user.UserName == match.Username) counter++;
+                    if (user.UserName == match1.Username) counter1++;
                 }
+                Console.WriteLine("====== " + counter + " out of " + user.UserTemplates.Count + " with pruning.");
+                Console.WriteLine("====== " + counter1 + " out of " + user.UserTemplates.Count + " without pruning.");
             }
 
             Console.WriteLine("Done");

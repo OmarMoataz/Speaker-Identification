@@ -133,11 +133,11 @@ namespace Recorder.MainFuctions
                         {
                             double LowerBoundDistance = DynamicTimeWarpingOperations.LowerBound_Kim(signal, FirstElement, LastElement, MinElement, MaxElement);
                             if (LowerBoundDistance > User.MinimumDistance) goto skip;
-                            TrueDistance = DynamicTimeWarpingOperations.Pruned_DTW_Distance(sequence, ToBeCompared);
+                            TrueDistance = DynamicTimeWarpingOperations.Pruned_DTW_Distance(ToBeCompared, sequence);
                         }
                         else
                         {
-                            TrueDistance = DynamicTimeWarpingOperations.DTW_Distance(sequence, ToBeCompared);
+                            TrueDistance = DynamicTimeWarpingOperations.DTW_Distance(ToBeCompared, sequence);
                         }
                         //Here I compare the two Distances together to see if I need to update the minimum or not.
                         if (TrueDistance < User.MinimumDistance)
